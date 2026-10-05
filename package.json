@@ -1,0 +1,56 @@
+{
+  "name": "instgarm_feed",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ],
+    "catalog": {
+      "dotenv": "^18.0.5",
+      "zod": "^4.6.5",
+      "typescript": "^7.0.2",
+      "@types/bun": "^1.4.2",
+      "vitest": "5.0.3",
+      "@vitest/ui": "5.0.3",
+      "@vitest/coverage-v8": "5.0.3",
+      "jsdom": "^30.1.2",
+      "@tanstack/react-form": "^1.33.5",
+      "react": "19.3.0",
+      "react-dom": "19.3.0",
+      "@tanstack/react-query": "^5.104.1",
+      "zustand": "^5.0.15",
+      "@types/react": "~19.3.0",
+      "@prisma/client": "^7.10.0"
+    }
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --if-present --filter '*' dev",
+    "build": "bun run --if-present --filter '*' build",
+    "check-types": "bun run --if-present --filter '*' check-types",
+    "dev:web": "bun run --filter web dev",
+    "dev:native": "bun run --filter native dev",
+    "dev:server": "bun run --filter server dev",
+    "db:push": "bun run --filter @instgarm_feed/db db:push",
+    "db:studio": "bun run --filter @instgarm_feed/db db:studio",
+    "db:generate": "bun run --filter @instgarm_feed/db db:generate",
+    "db:migrate": "bun run --filter @instgarm_feed/db db:migrate",
+    "db:start": "bun run --filter @instgarm_feed/db db:start",
+    "db:watch": "bun run --filter @instgarm_feed/db db:watch",
+    "db:stop": "bun run --filter @instgarm_feed/db db:stop",
+    "db:down": "bun run --filter @instgarm_feed/db db:down",
+    "test": "bun run --filter web test && bun run --filter server test"
+  },
+  "dependencies": {
+    "@instgarm_feed/env": "workspace:*",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@instgarm_feed/config": "workspace:*",
+    "@types/bun": "catalog:",
+    "typescript": "catalog:"
+  },
+  "packageManager": "bun@1.4.0"
+}

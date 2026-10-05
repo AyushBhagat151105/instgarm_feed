@@ -1,0 +1,3 @@
+{
+  "extends": "@instgarm_feed/config/tsconfig.base.json"
+}
