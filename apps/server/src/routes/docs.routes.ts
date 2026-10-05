@@ -21,7 +21,7 @@ router.use(
     url: "/api/docs/openapi.json",
     theme: "purple",
     pageTitle: "Instagram Feed & Profile API Reference",
-  } as any),
+  }),
 );
 
 export default router;

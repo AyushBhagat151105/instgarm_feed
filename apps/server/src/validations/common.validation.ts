@@ -29,7 +29,7 @@ export const apiErrorResponseSchema = z.object({
   success: z.literal(false).openapi({ example: false }),
   status: z.number().openapi({ example: 400 }),
   error: z.string().openapi({ example: "Error message details" }),
-  details: z.any().optional(),
+  details: z.unknown().optional(),
 });
 
 export function createApiResponseSchema<T extends z.ZodTypeAny>(dataSchema: T) {

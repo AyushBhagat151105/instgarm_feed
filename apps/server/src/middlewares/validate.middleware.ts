@@ -1,13 +1,13 @@
 import type { NextFunction, Request, RequestHandler, Response } from "express";
-import type { ZodType } from "zod";
+import type { ZodTypeAny } from "zod";
 
 import { ApiError } from "../utils/api-response";
 
 export interface ValidationSchemas {
-  body?: ZodType<any>;
-  query?: ZodType<any>;
-  params?: ZodType<any>;
-  headers?: ZodType<any>;
+  body?: ZodTypeAny;
+  query?: ZodTypeAny;
+  params?: ZodTypeAny;
+  headers?: ZodTypeAny;
 }
 
 export function validateRequest(schemas: ValidationSchemas): RequestHandler {
@@ -25,7 +25,12 @@ export function validateRequest(schemas: ValidationSchemas): RequestHandler {
           });
         });
       } else {
-        req.params = result.data;
+        Object.defineProperty(req, "params", {
+          value: result.data,
+          writable: true,
+          enumerable: true,
+          configurable: true,
+        });
       }
     }
 
@@ -40,7 +45,12 @@ export function validateRequest(schemas: ValidationSchemas): RequestHandler {
           });
         });
       } else {
-        req.query = result.data;
+        Object.defineProperty(req, "query", {
+          value: result.data,
+          writable: true,
+          enumerable: true,
+          configurable: true,
+        });
       }
     }
 

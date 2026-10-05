@@ -118,7 +118,7 @@ export class PostService {
     }
 
     if (post.authorId !== authorId) {
-      throw new ApiError(403, "You do not have permission to delete this post.");
+      throw new ApiError(403, "You can only delete your own posts.");
     }
 
     await prisma.post.delete({

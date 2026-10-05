@@ -1,14 +1,17 @@
+import type { ResponseConfig } from "@asteasolutions/zod-to-openapi";
 import type { RequestHandler, Router } from "express";
-import type { ZodType } from "zod";
+import type { AnyZodObject, ZodEffects, ZodTypeAny } from "zod";
 
 import { openApiRegistry } from "../lib/openapi";
 import { validateRequest } from "../middlewares/validate.middleware";
 
 export type HttpMethod = "get" | "post" | "put" | "patch" | "delete";
 
+export type RequestSchema = AnyZodObject | ZodEffects<AnyZodObject, unknown, unknown>;
+
 export interface RouteResponse {
   description: string;
-  schema?: ZodType<any>;
+  schema?: ZodTypeAny;
 }
 
 export interface RouteConfig {
@@ -19,10 +22,10 @@ export interface RouteConfig {
   tags: string[];
   security?: "bearer" | "none";
   request?: {
-    body?: ZodType<any>;
-    query?: ZodType<any>;
-    params?: ZodType<any>;
-    headers?: ZodType<any>;
+    body?: ZodTypeAny;
+    query?: RequestSchema;
+    params?: RequestSchema;
+    headers?: RequestSchema;
   };
   responses: Record<string | number, RouteResponse>;
 }
@@ -40,7 +43,7 @@ export function registerRoute(
   ...handlers: RequestHandler[]
 ): void {
   // 1. Convert responses to OpenAPI format
-  const openApiResponses: Record<string, any> = {};
+  const openApiResponses: Record<string, ResponseConfig> = {};
 
   for (const [status, res] of Object.entries(config.responses)) {
     openApiResponses[String(status)] = {

@@ -22,7 +22,9 @@ export const bearerAuth = openApiRegistry.registerComponent(
   },
 );
 
-export function generateOpenApiDocument(): Record<string, any> {
+export type OpenApiDocument = ReturnType<OpenApiGeneratorV3["generateDocument"]>;
+
+export function generateOpenApiDocument(): OpenApiDocument {
   const generator = new OpenApiGeneratorV3(openApiRegistry.definitions);
 
   return generator.generateDocument({

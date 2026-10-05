@@ -21,9 +21,9 @@ export class AuthService {
 
     if (existing) {
       if (existing.email.toLowerCase() === data.email.toLowerCase()) {
-        throw new ApiError(409, "A user with this email already exists.");
+        throw new ApiError(409, "Email is already registered.");
       }
-      throw new ApiError(409, "A user with this username already exists.");
+      throw new ApiError(409, "Username is already taken.");
     }
 
     const passwordHash = await hashPassword(data.password);
