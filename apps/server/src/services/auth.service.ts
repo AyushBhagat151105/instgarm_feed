@@ -191,7 +191,7 @@ export class AuthService {
 
   static async changePassword(
     userId: string,
-    data: { oldPassword: string; newPassword: string },
+    data: { oldPassword?: string; currentPassword?: string; newPassword: string },
   ) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -201,7 +201,12 @@ export class AuthService {
       throw new ApiError(404, "User not found.");
     }
 
-    const isMatch = await comparePassword(data.oldPassword, user.passwordHash);
+    const currentPwd = data.oldPassword || data.currentPassword;
+    if (!currentPwd) {
+      throw new ApiError(400, "Current password is required.");
+    }
+
+    const isMatch = await comparePassword(currentPwd, user.passwordHash);
     if (!isMatch) {
       throw new ApiError(400, "Current password is incorrect.");
     }

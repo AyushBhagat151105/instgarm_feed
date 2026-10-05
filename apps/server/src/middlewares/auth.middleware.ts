@@ -32,7 +32,14 @@ export async function requireAuth(
     return;
   }
 
-  const token = authHeader.split(" ")[1];
+  const parts = authHeader.split(" ");
+  const token = parts[1];
+
+  if (!token) {
+    next(new ApiError(401, "Invalid Bearer token format."));
+    return;
+  }
+
   const payload = verifyAccessToken(token);
 
   if (!payload) {
@@ -76,7 +83,14 @@ export async function optionalAuth(
     return;
   }
 
-  const token = authHeader.split(" ")[1];
+  const parts = authHeader.split(" ");
+  const token = parts[1];
+
+  if (!token) {
+    next();
+    return;
+  }
+
   const payload = verifyAccessToken(token);
 
   if (!payload) {

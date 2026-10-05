@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { createApiResponseSchema } from "./common.validation";
 
 export const userAuthInfoSchema = z.object({
@@ -57,16 +58,25 @@ export const refreshTokenBodySchema = z.object({
   }),
 });
 
-export const changePasswordBodySchema = z.object({
-  oldPassword: z.string().min(1, "Current password is required").openapi({
-    description: "Current account password",
-    example: "OldPassword123!",
-  }),
-  newPassword: z.string().min(6, "New password must be at least 6 characters").openapi({
-    description: "New password",
-    example: "NewSecretPassword123!",
-  }),
-});
+export const changePasswordBodySchema = z
+  .object({
+    oldPassword: z.string().optional().openapi({
+      description: "Current account password",
+      example: "OldPassword123!",
+    }),
+    currentPassword: z.string().optional().openapi({
+      description: "Current account password alias",
+      example: "OldPassword123!",
+    }),
+    newPassword: z.string().min(6, "New password must be at least 6 characters").openapi({
+      description: "New password",
+      example: "NewSecretPassword123!",
+    }),
+  })
+  .refine((data) => Boolean(data.oldPassword || data.currentPassword), {
+    message: "Current password is required",
+    path: ["oldPassword"],
+  });
 
 export const authTokensSchema = z.object({
   accessToken: z.string().openapi({ example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }),

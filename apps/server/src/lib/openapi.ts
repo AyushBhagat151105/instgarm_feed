@@ -8,7 +8,7 @@ import { z } from "zod";
 // Extend Zod to support .openapi(...) metadata chaining
 extendZodWithOpenApi(z);
 
-export const openApiRegistry = new OpenAPIRegistry();
+export const openApiRegistry: OpenAPIRegistry = new OpenAPIRegistry();
 
 // Register the standard Bearer Auth security scheme for JWT
 export const bearerAuth = openApiRegistry.registerComponent(
@@ -22,7 +22,7 @@ export const bearerAuth = openApiRegistry.registerComponent(
   },
 );
 
-export function generateOpenApiDocument() {
+export function generateOpenApiDocument(): Record<string, any> {
   const generator = new OpenApiGeneratorV3(openApiRegistry.definitions);
 
   return generator.generateDocument({

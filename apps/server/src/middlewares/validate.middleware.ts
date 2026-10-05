@@ -60,7 +60,7 @@ export function validateRequest(schemas: ValidationSchemas): RequestHandler {
     }
 
     if (validationErrors.length > 0) {
-      next(new ApiError(400, "Invalid request payload", validationErrors));
+      next(new ApiError(400, "Validation error", validationErrors));
       return;
     }
 

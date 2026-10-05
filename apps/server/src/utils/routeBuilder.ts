@@ -27,6 +27,13 @@ export interface RouteConfig {
   responses: Record<string | number, RouteResponse>;
 }
 
+/**
+ * Converts Express parameter notation (:param) to OpenAPI specification ({param})
+ */
+function expressPathToOpenApiPath(path: string): string {
+  return path.replace(/:([a-zA-Z0-9_]+)/g, "{$1}");
+}
+
 export function registerRoute(
   router: Router,
   config: RouteConfig,
@@ -51,9 +58,10 @@ export function registerRoute(
   }
 
   // 2. Register path with OpenAPI registry
+  const openApiPath = expressPathToOpenApiPath(config.path);
   openApiRegistry.registerPath({
     method: config.method,
-    path: config.path,
+    path: openApiPath,
     summary: config.summary,
     description: config.description,
     tags: config.tags,
@@ -95,9 +103,5 @@ export function registerRoute(
   }
 
   routeHandlers.push(...handlers);
-
-  // Map Express router path
-  // Since router might be mounted at /api/v1, if config.path starts with /api/v1, we mount the suffix or full path
-  // If the router is mounted at root, path is config.path
   router[config.method](config.path, ...routeHandlers);
 }

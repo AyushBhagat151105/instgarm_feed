@@ -1,4 +1,4 @@
-import type { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, RequestHandler, Response } from "express";
 
 type AsyncRequestHandler<Req extends Request = Request, Res extends Response = Response> = (
   req: Req,
@@ -9,16 +9,11 @@ type AsyncRequestHandler<Req extends Request = Request, Res extends Response = R
 /**
  * Wraps an async route handler so rejected promises reach the global error
  * handler instead of becoming unhandled rejections.
- *
- * @example
- * app.get("/users", asyncHandler(async (_req, res) => {
- *   res.json(ApiResponse.ok(await listUsers()));
- * }));
  */
 export function asyncHandler<Req extends Request = Request, Res extends Response = Response>(
   handler: AsyncRequestHandler<Req, Res>,
-) {
-  return (req: Req, res: Res, next: NextFunction): void => {
-    void handler(req, res, next).catch(next);
+): RequestHandler {
+  return (req: Request, res: Response, next: NextFunction): void => {
+    void handler(req as Req, res as Res, next).catch(next);
   };
 }

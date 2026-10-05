@@ -1,10 +1,10 @@
-import type { Request, Response } from "express";
+import type { Request, RequestHandler, Response } from "express";
 
 import { PostService } from "../services/post.service";
 import { ApiError, ApiResponse } from "../utils/api-response";
 import { asyncHandler } from "../utils/async-handler";
 
-export const createPostController = asyncHandler(async (req: Request, res: Response) => {
+export const createPostController: RequestHandler = asyncHandler(async (req: Request, res: Response) => {
   if (!req.user) {
     throw new ApiError(401, "Unauthorized");
   }
@@ -12,15 +12,15 @@ export const createPostController = asyncHandler(async (req: Request, res: Respo
   res.status(201).json(ApiResponse.created(post, "Post created successfully"));
 });
 
-export const getPostController = asyncHandler(async (req: Request, res: Response) => {
-  const post = await PostService.getPostById(req.params.id, req.user?.id);
+export const getPostController: RequestHandler = asyncHandler(async (req: Request, res: Response) => {
+  const post = await PostService.getPostById(req.params.id as string, req.user?.id);
   res.status(200).json(ApiResponse.ok(post));
 });
 
-export const deletePostController = asyncHandler(async (req: Request, res: Response) => {
+export const deletePostController: RequestHandler = asyncHandler(async (req: Request, res: Response) => {
   if (!req.user) {
     throw new ApiError(401, "Unauthorized");
   }
-  await PostService.deletePost(req.user.id, req.params.id);
+  await PostService.deletePost(req.user.id, req.params.id as string);
   res.status(200).json(ApiResponse.ok(null, "Post deleted successfully"));
 });
