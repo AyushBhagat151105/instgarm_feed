@@ -32,7 +32,7 @@
   "devDependencies": {
     "@instgarm_feed/config": "workspace:*",
     "@types/pg": "^8.23.1",
-    "prisma": "^8.0.0-rc.20",
+    "prisma": "catalog:",
     "typescript": "catalog:"
   }
 }
