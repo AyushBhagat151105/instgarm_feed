@@ -900,4 +900,9 @@ export function LoginPage() {
 
 *Happy Laughinh & Good Figure with the Developer Club Challenge! 🚀*
 
+
+*I am not a coder.
+
+
 *I am a pro coder
+
